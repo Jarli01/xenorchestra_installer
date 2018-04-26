@@ -45,7 +45,7 @@ sudo /usr/local/bin/n lts
 #Install XO dependencies
 sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils nfs-common
 
-sudo /usr/bin/git clone -b $xo_branch $xo_server_dir
+sudo /usr/bin/git clone -b $xo_branch $xo_server $xo_server_dir
 
 # Patch to allow config restore
 sudo sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
