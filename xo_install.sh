@@ -16,7 +16,7 @@ prerequisites=()
 command -v sudo || { echo "ERROR: Command 'sudo' must be installed to use this script."; echo "Please install 'sudo' and run this script again."; exit 1; }
 
 # See if the user has sudo permissions.
-sudo -v || { echo "ERROR: You must have 'sudo' permissions to use this script."; exit 1 }
+sudo -v || { echo "ERROR: You must have 'sudo' permissions to use this script."; exit 1; }
 
 # Check for git and curl
 command -v git || prerequisites+=('git')
