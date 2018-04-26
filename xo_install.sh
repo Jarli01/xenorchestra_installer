@@ -10,6 +10,12 @@ n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xen-orchestra"
 systemd_service_dir="/lib/systemd/system"
 xo_service="xo-server.service"
+prerequisites=()
+
+command -v sudo || { echo "ERROR: Command 'sudo' must be installed..."; exit 1; }
+
+command -v git || prerequisites+=('git')
+command -v curl || prerequisites+=('curl')
 
 #Install node and yarn
 cd /opt
