@@ -38,7 +38,7 @@ sudo /usr/bin/apt-get update
 sudo /usr/bin/apt-get install --yes nodejs yarn
 
 #Install n
-/usr/bin/curl -o $n_location $n_repo
+sudo /usr/bin/curl -o $n_location $n_repo
 sudo /bin/chmod +x $n_location
 sudo /usr/local/bin/n lts
 
