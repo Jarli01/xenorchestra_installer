@@ -51,8 +51,8 @@ sudo /usr/bin/git clone -b $xo_branch $xo_server $xo_server_dir
 sudo sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 
 cd $xo_server_dir
-/usr/bin/yarn
-/usr/bin/yarn build
+sudo /usr/bin/yarn
+sudo /usr/bin/yarn build
 
 cd packages/xo-server
 sudo cp sample.config.yaml .xo-server.yaml
