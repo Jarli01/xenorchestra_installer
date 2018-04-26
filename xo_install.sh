@@ -10,6 +10,23 @@ n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xen-orchestra"
 systemd_service_dir="/lib/systemd/system"
 xo_service="xo-server.service"
+prerequisites=()
+
+# Check if 'sudo' has been installed (it is not in a basic Debian install)
+command -v sudo || { echo "ERROR: Command 'sudo' must be installed to use this script."; echo "Please install 'sudo' and run this script again."; exit 1; }
+
+# See if the user has sudo permissions.
+sudo -v || { echo "ERROR: You must have 'sudo' permissions to use this script."; exit 1; }
+
+# Check for git and curl
+command -v git || prerequisites+=('git')
+command -v curl || prerequisites+=('curl')
+
+# If curl and/or git were missing, install them here
+# so we can proceed.
+if [ "${#prerequisites[@]}" -gt 0 ]; then
+    sudo /usr/bin/apt-get install --yes ${prerequisites[*]}
+fi
 
 #Install node and yarn
 cd /opt
@@ -21,21 +38,21 @@ sudo /usr/bin/apt-get update
 sudo /usr/bin/apt-get install --yes nodejs yarn
 
 #Install n
-/usr/bin/curl -o $n_location $n_repo
+sudo /usr/bin/curl -o $n_location $n_repo
 sudo /bin/chmod +x $n_location
 sudo /usr/local/bin/n lts
 
 #Install XO dependencies
 sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils nfs-common
 
-/usr/bin/git clone -b $xo_branch $xo_server
+sudo /usr/bin/git clone -b $xo_branch $xo_server $xo_server_dir
 
 # Patch to allow config restore
-sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
+sudo sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 
 cd $xo_server_dir
-/usr/bin/yarn
-/usr/bin/yarn build
+sudo /usr/bin/yarn
+sudo /usr/bin/yarn build
 
 cd packages/xo-server
 sudo cp sample.config.yaml .xo-server.yaml
@@ -43,7 +60,7 @@ sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xen-orchestra/packages/x
 
 if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 
-/bin/cat << EOF >> $systemd_service_dir/$xo_service
+/bin/cat << EOF | sudo tee $systemd_service_dir/$xo_service >/dev/null
 # systemd service for XO-Server.
 
 [Unit]
@@ -61,7 +78,7 @@ WantedBy=multi-user.target
 EOF
 fi
 
-sudo /bin/chmod +x $systemd_service_dir/$xo_service
+sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable $xo_service
 sudo /bin/systemctl start $xo_service
 
