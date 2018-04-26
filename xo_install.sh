@@ -45,10 +45,10 @@ sudo /usr/local/bin/n lts
 #Install XO dependencies
 sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils nfs-common
 
-/usr/bin/git clone -b $xo_branch $xo_server_dir
+sudo /usr/bin/git clone -b $xo_branch $xo_server_dir
 
 # Patch to allow config restore
-sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
+sudo sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 
 cd $xo_server_dir
 /usr/bin/yarn
@@ -60,7 +60,7 @@ sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xen-orchestra/packages/x
 
 if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 
-/bin/cat << EOF >> $systemd_service_dir/$xo_service
+sudo /bin/cat << EOF >> $systemd_service_dir/$xo_service
 # systemd service for XO-Server.
 
 [Unit]
