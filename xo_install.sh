@@ -60,7 +60,7 @@ sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xen-orchestra/packages/x
 
 if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 
-sudo /bin/cat << EOF >> $systemd_service_dir/$xo_service
+/bin/cat << EOF | sudo tee $systemd_service_dir/$xo_service >/dev/null
 # systemd service for XO-Server.
 
 [Unit]
@@ -78,7 +78,7 @@ WantedBy=multi-user.target
 EOF
 fi
 
-sudo /bin/chmod +x $systemd_service_dir/$xo_service
+sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable $xo_service
 sudo /bin/systemctl start $xo_service
 
