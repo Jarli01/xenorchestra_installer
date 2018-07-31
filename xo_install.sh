@@ -7,6 +7,12 @@
 totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
 if [ "$totalk" -lt "1000000" ]; then echo "XOCE Requires at least 1GB Memory!"; exit 1; fi 
 
+# Repository add - confirm required repoistor(ies) are enabled and active, update and upgrade no matter what
+multiverse="http://archive.ubuntu.com/multiverse"
+if ! grep -q "^deb .*$multiverse"  /etc/apt/sources.list;
+then
+sudo add-apt-repository multiverse
+
 xo_branch="master"
 xo_server="https://github.com/vatesfr/xen-orchestra"
 n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
@@ -84,4 +90,4 @@ fi
 echo ""
 echo ""
 echo "Installation complete, open a browser to:" && hostname -I && echo "" && echo "Default Login:"admin@admin.net" Password:"admin"" && echo "" && echo "Don't forget to change your password!"
-
+fi
