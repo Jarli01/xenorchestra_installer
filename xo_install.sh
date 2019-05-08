@@ -14,7 +14,6 @@ xo_branch="master"
 xo_server="https://github.com/vatesfr/xen-orchestra"
 n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
 yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
-node_source="https://deb.nodesource.com/setup_8.x"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xen-orchestra"
@@ -25,18 +24,21 @@ xo_service="xo-server.service"
 /usr/bin/apt-get update
 /usr/bin/apt-get --yes install git curl
 
-#Install node and yarn
+#Install yarn
 cd /opt
 
-/usr/bin/curl -sL $node_source | bash -
+                                       
 /usr/bin/curl -sS $yarn_gpg | apt-key add -
 echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 /usr/bin/apt-get update
-/usr/bin/apt-get install --yes nodejs yarn
+/usr/bin/apt-get install --yes yarn
 
 # Install n
 /usr/bin/curl -o $n_location $n_repo
 /bin/chmod +x $n_location
+
+# Install node via n
+n 8.16
 
 # Symlink node directories
 ln -s /usr/bin/node /usr/local/bin/node
