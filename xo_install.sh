@@ -20,7 +20,7 @@ xo_server_dir="/opt/xen-orchestra"
 systemd_service_dir="/lib/systemd/system"
 xo_service="xo-server.service"
 
-# Ensures that Yarn dependencies are installed, git, curl, apt-transport-https
+# Ensures that Yarn dependencies are installed
 /usr/bin/apt-get update
 /usr/bin/apt-get --yes install git curl apt-transport-https gnupg
 
