@@ -22,7 +22,7 @@ xo_service="xo-server.service"
 
 # Ensures that Yarn dependencies are installed, git, curl, apt-transport-https
 /usr/bin/apt-get update
-/usr/bin/apt-get --yes install git curl apt-transport-https
+/usr/bin/apt-get --yes install git curl apt-transport-https gnupg
 
 #Install yarn
 cd /opt
