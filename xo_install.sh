@@ -12,7 +12,7 @@ if [ "$distro" = "Ubuntu" ]; then /usr/bin/add-apt-repository multiverse; fi
 
 xo_branch="master"
 xo_server="https://github.com/vatesfr/xen-orchestra"
-n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
+n_repo="https://raw.githubusercontent.com/tj/n/master/bin/n"
 yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 n_location="/usr/local/bin/n"
@@ -27,7 +27,6 @@ xo_service="xo-server.service"
 #Install yarn
 cd /opt
 
-                                       
 /usr/bin/curl -sS $yarn_gpg | apt-key add -
 echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 /usr/bin/apt-get update
@@ -38,7 +37,7 @@ echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 /bin/chmod +x $n_location
 
 # Install node via n
-n 8.16
+n lts
 
 # Symlink node directories
 ln -s /usr/bin/node /usr/local/bin/node
