@@ -54,12 +54,21 @@ cd $xo_server_dir
 cd packages/xo-server
 cp sample.config.toml .xo-server.toml
 
+dest=/usr/local/lib/node_modules/
 #Create node_modules directory if doesn't exist
-mkdir -p /usr/local/lib/node_modules/
+mkdir -p $dest
+
+# Plugins to ignore
+ignoreplugins=("xo-server-test")
 
 # Symlink all plugins
 for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
-    ln -s "$source" /usr/local/lib/node_modules/
+  plugin=$(basename $source)
+  if [[ "${ignoreplugins[@]}" =~ $plugin ]]; then
+      echo "Ignoring $plugin plugin"
+  else
+      ln -s "$source" "$dest"
+    fi
 done
 
 if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
