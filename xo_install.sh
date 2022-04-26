@@ -13,7 +13,7 @@ if [ "$distro" = "Ubuntu" ]; then /usr/bin/add-apt-repository multiverse; fi
 xo_branch="master"
 xo_server="https://github.com/vatesfr/xen-orchestra"
 n_repo="https://raw.githubusercontent.com/tj/n/master/bin/n"
-yarn_repo="deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main"
+yarn_repo="deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xen-orchestra"
