@@ -5,7 +5,7 @@
 
 # Check for required memory
 totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
-if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
+if [ "$totalk" -lt "2000000" ]; then echo "XOCE Requires at least 2GB Memory!"; exit 1; fi 
 
 distro=$(/usr/bin/lsb_release -is)
 if [ "$distro" = "Ubuntu" ]; then /usr/bin/add-apt-repository multiverse; fi
@@ -13,7 +13,7 @@ if [ "$distro" = "Ubuntu" ]; then /usr/bin/add-apt-repository multiverse; fi
 xo_branch="master"
 xo_server="https://github.com/vatesfr/xen-orchestra"
 n_repo="https://raw.githubusercontent.com/tj/n/master/bin/n"
-yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
+yarn_repo="deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xen-orchestra"
@@ -27,7 +27,7 @@ xo_service="xo-server.service"
 #Install yarn
 cd /opt
 
-/usr/bin/curl -sS $yarn_gpg | apt-key add -
+/usr/bin/curl -sSL $yarn_gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 /usr/bin/apt-get update
 /usr/bin/apt-get install --yes yarn
