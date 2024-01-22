@@ -1,0 +1,15 @@
+# defaults file
+# The default username and password are applied,  and admin for the password
+xoa_install_url: https://raw.githubusercontent.com/Jarli01/xenorchestra_installer/master/xo_install.sh
+xoa_install_script: xo_install.sh
+xoa_update_url: https://raw.githubusercontent.com/Jarli01/xenorchestra_updater/master/xo-update.sh
+xoa_update_script: xo_update.sh
+git_email: ""
+git_user: ""
+xoa_default_user: "admin@admin.net"
+xoa_default_password: "admin"
+xoa_user: xoa
+xoa_password: xoa
+xcpng_servers: [{"label": "localhost", "ip": "127.0.1"}]
+xcpng_user: root
+xcpng_password: xcpng

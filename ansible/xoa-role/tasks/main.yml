@@ -1,0 +1,250 @@
+- name: Updating packages
+  shell: apt-get update -y && apt-get upgrade -y
+  when: ansible_distribution == 'Debian'
+  ignore_errors: True
+  args:
+    warn: no
+  notify: cleaning_packages_metadata
+  tags:
+  - install
+  - update
+
+- name: Installing packages
+  package: name={{item}} state=present
+  when: ansible_distribution == 'Debian'
+  with_items:
+  - curl
+  - git
+  notify: cleaning_packages_metadata
+  tags:
+  - install
+  - update
+
+- name: Check if xoa is already installed
+  stat:
+    path: /opt/xen-orchestra
+  register: xen_orchestra_directory
+  tags:
+  - install
+  - update
+
+- name: Ensure group xoa exists
+  ansible.builtin.group:
+    name: xoa
+    state: present
+  tags:
+  - install
+  - update
+
+- name: Check if xoa is already registered in sudoers.d
+  stat:
+    path: /etc/sudoers.d/xoa
+  register: xoa_sudoers_file
+  tags:
+  - install
+  - update
+
+- name: Add the xoa user
+  ansible.builtin.user:
+    name: xoa
+    shell: /bin/bash
+    home: /home/xoa
+    comment: xen-orchestra user
+    uid: 1040
+    groups: xoa,users
+    append: yes
+  when: not xoa_sudoers_file.stat.exists
+  tags:
+  - install
+  - update
+
+- name: Register xoa in sudoers.d
+  ansible.builtin.file:
+    path: /etc/sudoers.d/xoa
+    owner: root
+    group: root
+    mode: '0640'
+  when: not xoa_sudoers_file.stat.exists
+  tags:
+  - install
+  - update
+
+- name: Allow xoa to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers.d/xoa
+    state: present
+    regexp: '^%xoa'
+    line: '%xoa ALL=(ALL) NOPASSWD: ALL'
+  tags:
+  - install
+  - update
+
+- name: Setting git user email
+  git_config:
+    name: user.email
+    scope: global
+    value: "{{git_email}}"
+  tags:
+  - install
+  - update
+
+- name: Setting git user
+  git_config:
+    name: user.name
+    scope: global
+    value: "{{git_user}}"
+  tags:
+  - install
+  - update
+
+- name: Download installation script
+  ansible.builtin.get_url:
+    url: "{{xoa_install_url}}"
+    dest: "/tmp/{{xoa_install_script}}"
+    mode: '0770'
+  when: not xen_orchestra_directory.stat.exists
+  tags:
+  - install
+  - update
+
+- name: Download update script
+  ansible.builtin.get_url:
+    url: "{{xoa_update_url}}"
+    dest: "/home/xoa/{{xoa_update_script}}"
+    mode: '0770'
+  tags:
+  - install
+  - update
+
+- name: Create symbolic link to
+  file:
+    src: "/home/xoa/{{xoa_update_script}}"
+    dest: "/etc/cron.weekly/{{xoa_update_script}}"
+    state: link
+  tags:
+  - install
+  - update
+
+- name: Removing existing data structures
+  shell: "rm -R /var/lib/xo-server"
+  ignore_errors: False
+  args:
+    warn: no
+  when: not xen_orchestra_directory.stat.exists
+  tags:
+  - install
+
+- name: Removing existing data structures
+  shell: "rm -R /var/lib/xo-updater"
+  ignore_errors: False
+  args:
+    warn: no
+  when: not xen_orchestra_directory.stat.exists
+  tags:
+  - install
+
+- name: Removing existing redis data
+  shell: "redis-cli -n 0 FLUSHALL"
+  ignore_errors: False
+  args:
+    warn: no
+  when: not xen_orchestra_directory.stat.exists
+  tags:
+  - install
+
+- name: Installing
+  shell: "/tmp/{{xoa_install_script}}"
+  ignore_errors: False
+  args:
+    warn: no
+  when: not xen_orchestra_directory.stat.exists
+  tags:
+  - install
+  - update
+
+- name: Updating
+  shell: "/home/xoa/{{xoa_update_script}} -n stable"
+  ignore_errors: False
+  args:
+    warn: no
+  when: xen_orchestra_directory.stat.exists
+  tags:
+  - install
+  - update
+
+- name: Installing xo-cli
+  shell: "npm install -g xo-cli"
+  ignore_errors: False
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
+
+- name: Closing existing session using xo-cli
+  shell: "xo-cli --unregister"
+  ignore_errors: True
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
+
+- name: Opening session using xo-cli
+  shell: "xo-cli --register --au http://127.0.0.1 {{xoa_default_user}} {{xoa_default_password}}"
+  ignore_errors: False
+  args:
+    warn: no
+  tags:
+  - install
+
+- name: Adding user session using xo-cli
+  shell: "xo-cli user.create email='{{xoa_user}}' password='{{xoa_password}}' permission='admin'"
+  ignore_errors: False
+  args:
+    warn: no
+  tags:
+  - install
+
+- name: Closing existing session using xo-cli
+  shell: "xo-cli --unregister"
+  ignore_errors: True
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
+
+- name: Opening session using xo-cli
+  shell: "xo-cli --register --au http://127.0.0.1 {{xoa_user}} {{xoa_password}}"
+  ignore_errors: False
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
+
+- name: Adding xcp-ng servers using xo-cli
+  shell: "xo-cli server.add label='{{item.label}}' host='{{item.ip}}' username={{xcpng_user}} password='{{xcpng_password}}' autoConnect=true allowUnauthorized=true"
+  ignore_errors: False
+  with_items: "{{xcpng_servers}}"
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
+
+- name: Closing session using xo-cli
+  shell: "xo-cli --unregister"
+  ignore_errors: False
+  args:
+    warn: no
+  tags:
+  - add-servers
+  - install
+  - update
