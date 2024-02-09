@@ -41,8 +41,6 @@ To maintain your installation from Source or from this repo. (either prepackaged
 
 This script automates the manual process which can be [found here](https://xen-orchestra.com/docs/from_the_sources.html) as well as removes a few feature restrictions that otherwise would need to be changed manually if following the manual installation process. This script is not officially supported by the Vates team, but is supported by this community. 
 
-## Prepackaged Installation temporarily disabled while I sort out the credentials issue.
-
 # Self-signed SSL 
 
 If you are running this internally and need SSL (recommended) follow the below steps to create a self-signed SSL key and certificate; while browsers will still say the connection is unsecured, this is because the certificate isn't from a public authority and is on your LAN. You can add this cert to your systems root authority if it want to to remove the warning. Alternatively a reverse proxy can be used for public facing installations.  
