@@ -1,0 +1,22 @@
+- name: reload_systemd
+  shell: systemctl daemon-reload
+  args:
+    warn: no
+
+- name: cleaning_packages_metadata
+  shell: yum clean all && rm -rf /var/cache/yum
+  when: ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'XCP-ng'
+  args:
+    warn: no
+
+- name: cleaning_packages_metadata
+  shell: zypper clean && rm -rf /var/cache/zypp
+  when: ansible_distribution == 'openSUSE Leap'
+  args:
+    warn: no
+
+- name: cleaning_packages_metadata
+  shell: apt clean
+  when: ansible_distribution == 'Debian'
+  args:
+    warn: no
