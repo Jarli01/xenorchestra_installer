@@ -39,7 +39,7 @@ To maintain your installation from Source or from this repo. (either prepackaged
 
 # Declarations
 
-This script automates the manual process which can be [found here](https://xen-orchestra.com/docs/from_the_sources.html) as well as removes a few feature restrictions that otherwise would need to be changed manually if following the manual installation process. This script is not officially supported by the Vates team, but is supported by this community. 
+This script automates the manual process which can be [found here](https://docs.xen-orchestra.com/installation) as well as removes a few feature restrictions that otherwise would need to be changed manually if following the manual installation process. This script is not officially supported by the Vates team, but is supported by this community. 
 
 # Self-signed SSL 
 
