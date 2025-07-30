@@ -83,7 +83,7 @@ While the goal initially was to have a solution as close to XOA as possible, wit
 
 To keep XOCE up to date I recommend that anyone who's used this installation script or the sources installation to use this: https://github.com/Jarli01/xenorchestra_updater
 
-# Adding XOCE v6 to your installation (this is a Work In Progress by Vates)
+## Adding XOCE v6 to your installation (this is a Work In Progress by Vates)
 
 	cd /opt/xen-orchestra
 	yarn run turbo run build --filter @xen-orchestra/web
