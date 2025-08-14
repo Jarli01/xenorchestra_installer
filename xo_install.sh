@@ -24,6 +24,12 @@ xo_service="xo-server.service"
 /usr/bin/apt-get update
 /usr/bin/apt-get --yes install git curl apt-transport-https gnupg
 
+# Downloads VDDK plugin from Broadcom (hardcoded URI..... see #8840 from Vates/Xen Orchestra)
+wget --content-disposition --trust-server-names --no-check-certificate      "https://dp-downloads.broadcom.com/?file=VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz&oid=375847&id=SoYVdF2FlAVoEMZVuSoD4RuJwMDFN-D22Im6Kc-9ft3VXzE1NCPDcQeLBAq1LsQ=&specDownload=true&verify=1755187304-oWOk%2FhSuR4oypbWc1yFiZYAKpqf9zYKOghZgGOpeUOY%3D"
+
+sudo mkdir /usr/local/bin/vddk
+sudo tar -xvf "./VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz" -C /usr/local/lib/vddk
+
 #Install yarn
 cd /opt
 
