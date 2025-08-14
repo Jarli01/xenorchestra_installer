@@ -22,7 +22,7 @@ xo_service="xo-server.service"
 
 # Ensures that Yarn dependencies are installed
 /usr/bin/apt-get update
-/usr/bin/apt-get --yes install git curl apt-transport-https gnupg
+/usr/bin/apt-get --yes install git curl apt-transport-https gnupg nbdkit libnbd-bin
 
 # Downloads VDDK plugin from Broadcom (hardcoded URI..... see #8840 from Vates/Xen Orchestra)
 wget --content-disposition --trust-server-names --no-check-certificate "https://gitlab.com/Jarli01/xenorchestra_installer/-/raw/master/VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz"
