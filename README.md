@@ -72,7 +72,7 @@ For a legal reasons we cannot provide an automated solution to installing these 
 2. Move this file to your XOCE installation (winSCP or some other tool)
 3. Create this directory as it doesn't exist `/usr/local/lib/vddk` and uncompress the tarball into the same directory with ```sudo tar -xvf "./VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz" -C /usr/local/lib/vddk```
 
-   The directory structure should look match the below
+   The directory structure should match the below
  
 ```  
 debian@xoa-source:/usr/local/lib/vddk$ tree -d .
