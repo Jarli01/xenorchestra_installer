@@ -65,6 +65,33 @@ Restart xo-server.service
 
 Reload your XOCE website using SSL (https://your-host-ip)
 
+# Migrating from VMWare ESXi
+The optional VMware Virtual Disk Development Kit (VDDK) offers increased performance and additional features when migrating VMs from VMWare ESXi to XCP-ng. This collection must be manually downloaded and installed due to licensing restrictions. Here are the steps for installing this optional module --
+
+1. Go to https://developer.broadcom.com/sdks/vmware-virtual-disk-development-kit-vddk/latest and download the VDDK #.0 Tarball for Linux (at writing the version is 9.0 and MD5 sum is f508fe7134fcdd137fbdba5ee7f65d9f) 
+2. Move this file to your XOCE installation (winSCP or some other tool)
+3. Create this directory as it doesn't exist with `mkdir /usr/local/lib/vddk` and uncompress the tarball into the same directory with ```sudo tar -xvf "./VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz" -C /usr/local/lib/vddk```
+
+   The directory structure should match the below
+ 
+```  
+debian@xoa-source:/usr/local/lib/vddk$ tree -d .
+└── vmware-vix-disklib-distrib
+    ├── bin64
+    ├── doc
+    │   ├── errors
+    │   ├── functions
+    │   ├── samples
+    │   │   └── diskLib
+    │   └── types
+    ├── include
+    ├── lib32
+    └── lib64
+```
+4. Lastly install these dependencies ```sudo apt install -y nbdkit libnbd-bin```
+
+You should now have access to the improved features from this VDDK
+
 # Problems?
 
 Check out our [Troubleshooting Page](https://github.com/Jarli01/xenorchestra_installer/blob/master/TROUBLESHOOTING.md)!
@@ -89,5 +116,3 @@ To keep XOCE up to date I recommend that anyone who's used this installation scr
 	yarn run turbo run build --filter @xen-orchestra/web
 
 Once the installation is completed, you can then go to [https://your-host-ip/v6](https://your-host-ip/v6)
-
-
