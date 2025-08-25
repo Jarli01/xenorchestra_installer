@@ -66,11 +66,11 @@ Restart xo-server.service
 Reload your XOCE website using SSL (https://your-host-ip)
 
 # Migrating from VMWare ESXi
-For a legal reasons we cannot provide an automated solution to installing these dependencies which offer increased performance and features while migrating VMs from VMWare ESXi. These steps do not need to be followed for every instance, but are recommended if you're migrating away. 
+The optional VMware Virtual Disk Development Kit (VDDK) offers increased performance and additional features when migrating VMs from VMWare ESXi to XCP-ng. This collection must be manually downloaded and installed due to licensing restrictions. Here are the steps for installing this optional module --
 
 1. Go to https://developer.broadcom.com/sdks/vmware-virtual-disk-development-kit-vddk/latest and download the VDDK #.0 Tarball for Linux (at writing the version is 9.0 and MD5 sum is f508fe7134fcdd137fbdba5ee7f65d9f) 
 2. Move this file to your XOCE installation (winSCP or some other tool)
-3. Create this directory as it doesn't exist `/usr/local/lib/vddk` and uncompress the tarball into the same directory with ```sudo tar -xvf "./VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz" -C /usr/local/lib/vddk```
+3. Create this directory as it doesn't exist with `mkdir /usr/local/lib/vddk` and uncompress the tarball into the same directory with ```sudo tar -xvf "./VMware-vix-disklib-9.0.0.0.24742305.x86_64.tar.gz" -C /usr/local/lib/vddk```
 
    The directory structure should match the below
  
@@ -89,7 +89,8 @@ debian@xoa-source:/usr/local/lib/vddk$ tree -d .
     └── lib64
 ```
 4. Lastly install these dependencies ```sudo apt install -y nbdkit libnbd-bin```
-5. You should now have access to the improved features from this VDDK
+
+You should now have access to the improved features from this VDDK
 
 # Problems?
 
