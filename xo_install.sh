@@ -43,7 +43,7 @@ n lts
 ln -s /usr/bin/node /usr/local/bin/node
 
 # Install XO dependencies
-/usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python3-minimal libvhdi-utils nfs-common lvm2 cifs-utils openssl libfuse2t64
+/usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python3-minimal libvhdi-utils nfs-common lvm2 cifs-utils openssl libfuse2t64 libnbd-bin nbdkit nbdkit-plugin-vddk
 
 /usr/bin/git clone -b $xo_branch $xo_server
 
