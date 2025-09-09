@@ -4,6 +4,8 @@ IFS=$'\n\t'
 
 # --- Check if we were effectively run as root ---
 [ "${EUID:-$(id -u)}" = 0 ] || { echo "This script needs to be run as root!"; exit 1; }
+
+# --- Check for required memory ---
 totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
 if [ "$totalk" -lt "2000000" ]; then echo "XOCE Requires at least 2GB Memory!"; exit 1; fi
 export DEBIAN_FRONTEND=noninteractive
@@ -17,7 +19,7 @@ else
   echo "Unable to detect OS via /etc/os-release"; exit 1
 fi
 
-# Deb Point Release Check
+# --- Deb Point Release Check ---
 if [ "$distro" = "debian" ] && [ -r /etc/debian_version ]; then
   deb_point=$(sed -E 's/^([0-9]+(\.[0-9]+)?).*/\1/' /etc/debian_version)
   version="${deb_point:-$version}"
